@@ -19,15 +19,11 @@
         update_cache: yes
         cache_valid_time: 3600
 
-    - name: Install DigitalOcean monitoring agent
-      apt:
-        name: do-agent
-        state: present
-
-    - name: Install Nginx
-      apt:
-        name: nginx
-        state: present
+    - name: Install Nginx and DigitalOcean agent
+      action: apt name={{item}} state=present
+      with_items:
+        - nginx
+        - do-agent
 
     - name: Install index.html from template
       template:
