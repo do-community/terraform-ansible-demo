@@ -115,7 +115,7 @@ This is the IP of your new load balancer. If you navigate to it in your browser,
 Let's fix that by running Ansible to finish setting up the servers:
 
 ```
-$ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory ansible.yml
+$ ansible-playbook -i inventory ansible.yml
 ```
 
 Ansible will output some status information as it works through the tasks we've defined in `ansible.yml`. When it's done, the two Droplets will both be serving a unique web page that shows the hostname of the server.
