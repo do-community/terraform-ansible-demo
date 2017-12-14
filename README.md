@@ -13,7 +13,7 @@ We will then use Ansible to run the following tasks on both Droplets:
 - Update all packages
 - Install the DigitalOcean monitoring agent, to enable resource usage graphs in the Control Panel
 - Install the Nginx web server software
-- Remove the default `index.html` file and replace it with our own
+- Install a demo `index.html` that shows Sammy and the Droplet's hostname
 
 
 ## Prerequisites

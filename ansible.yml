@@ -29,11 +29,6 @@
         name: nginx
         state: present
 
-    - name: Remove default index.html
-      file:
-        path: /var/www/html/index.nginx-debian.html
-        state: absent
-
     - name: Install index.html from template
       template:
         src: index-template.j2
