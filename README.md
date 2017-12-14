@@ -55,17 +55,15 @@ Open the new file in your favorite text editor. You'll see the following:
 
 ```
 do_token = ""
-ssh_keyfile = "~/.ssh/id_rsa.pub"
 ssh_fingerprint = ""
 ```
 
 Fill in each variable:
 
 - **do_token:** is your personal access token for the DigitalOcean API
-- **ssh_keyfile:** is the path to the SSH public key you've uploaded to the DigitalOcean Control Panel. The default is a pretty common location, but you should verify and update the variable if needed
 - **ssh_fingerprint:** the DigitalOcean API refers to SSH keys using their _fingerprint_, which is a shorthand identifier based on the key itself.
 
-  To get the fingerprint for your key, run the following command, being sure to update the path (currently `~/.ssh/id_rsa.pub`) to the key you're using, if necessary:
+  To get the fingerprint for your key, run the following command, being sure to update the path (currently `~/.ssh/id_rsa.pub`) to the key you're using with DigitalOcean, if necessary:
 
   ```
   $ ssh-keygen -E md5 -lf ~/.ssh/id_rsa.pub | awk '{print $2}'
