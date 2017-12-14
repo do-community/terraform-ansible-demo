@@ -1,0 +1,43 @@
+---
+- hosts: all
+
+  tasks:
+    - name: Install DigitalOcean repo key
+      apt_key:
+        url: https://repos.sonar.digitalocean.com/sonar-agent.asc
+        state: present
+
+    - name: Install DigitalOcean apt repo
+      apt_repository:
+        repo: deb https://repos.sonar.digitalocean.com/apt main main
+        state: present
+        update_cache: yes
+
+    - name: Update all packages
+      apt:
+        upgrade: dist
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install DigitalOcean monitoring agent
+      apt:
+        name: do-agent
+        state: present
+
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Remove default index.html
+      file:
+        path: /var/www/html/index.nginx-debian.html
+        state: absent
+
+    - name: Install index.html from template
+      template:
+        src: index-template.j2
+        dest: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: 0644

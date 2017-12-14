@@ -1,0 +1,3 @@
+do_token = ""
+ssh_keyfile = "~/.ssh/id_rsa.pub"
+ssh_fingerprint = ""
