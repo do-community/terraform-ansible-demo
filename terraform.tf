@@ -1,8 +1,11 @@
-variable "do_token" {}
-variable "ssh_fingerprint" {}
+variable "do_token" {
+}
+
+variable "ssh_fingerprint" {
+}
 
 provider "digitalocean" {
-  token = "${var.do_token}"
+  token = var.do_token
 }
 
 # create two demo droplets
@@ -11,7 +14,7 @@ resource "digitalocean_droplet" "demo-01" {
   name     = "demo-01"
   region   = "nyc3"
   size     = "512mb"
-  ssh_keys = ["${var.ssh_fingerprint}"]
+  ssh_keys = [var.ssh_fingerprint]
 }
 
 resource "digitalocean_droplet" "demo-02" {
@@ -19,7 +22,7 @@ resource "digitalocean_droplet" "demo-02" {
   name     = "demo-02"
   region   = "nyc3"
   size     = "512mb"
-  ssh_keys = ["${var.ssh_fingerprint}"]
+  ssh_keys = [var.ssh_fingerprint]
 }
 
 # create a loadbalancer that points to the two droplets
@@ -28,8 +31,8 @@ resource "digitalocean_loadbalancer" "demo-lb" {
   region = "nyc3"
 
   droplet_ids = [
-    "${digitalocean_droplet.demo-01.id}",
-    "${digitalocean_droplet.demo-02.id}",
+    digitalocean_droplet.demo-01.id,
+    digitalocean_droplet.demo-02.id,
   ]
 
   forwarding_rule {
@@ -46,40 +49,39 @@ resource "digitalocean_firewall" "demo-firewall" {
   name = "demo-firewall"
 
   droplet_ids = [
-    "${digitalocean_droplet.demo-01.id}",
-    "${digitalocean_droplet.demo-02.id}",
+    digitalocean_droplet.demo-01.id,
+    digitalocean_droplet.demo-02.id,
   ]
 
-  inbound_rule = [
-    {
-      protocol         = "tcp"
-      port_range       = "22"
-      source_addresses = ["0.0.0.0/0"]
-    },
-    {
-      protocol                  = "tcp"
-      port_range                = "80"
-      source_load_balancer_uids = ["${digitalocean_loadbalancer.demo-lb.id}"]
-    },
-  ]
+  inbound_rule {
+    protocol         = "tcp"
+    port_range       = "22"
+    source_addresses = ["0.0.0.0/0"]
+  }
+  inbound_rule {
+    protocol                  = "tcp"
+    port_range                = "80"
+    source_load_balancer_uids = [digitalocean_loadbalancer.demo-lb.id]
+  }
 
-  outbound_rule = [
-    {
-      protocol              = "tcp"
-      port_range            = "all"
-      destination_addresses = ["0.0.0.0/0"]
-    },
-    {
-      protocol              = "udp"
-      port_range            = "all"
-      destination_addresses = ["0.0.0.0/0"]
-    },
-  ]
+  outbound_rule {
+    protocol              = "tcp"
+    port_range            = "all"
+    destination_addresses = ["0.0.0.0/0"]
+  }
+  outbound_rule {
+    protocol              = "udp"
+    port_range            = "all"
+    destination_addresses = ["0.0.0.0/0"]
+  }
 }
 
 # create an ansible inventory file
 resource "null_resource" "ansible-provision" {
-  depends_on = ["digitalocean_droplet.demo-01", "digitalocean_droplet.demo-02"]
+  depends_on = [
+    digitalocean_droplet.demo-01,
+    digitalocean_droplet.demo-02,
+  ]
 
   provisioner "local-exec" {
     command = "echo '${digitalocean_droplet.demo-01.name} ansible_host=${digitalocean_droplet.demo-01.ipv4_address} ansible_ssh_user=root ansible_python_interpreter=/usr/bin/python3' > inventory"
@@ -92,5 +94,6 @@ resource "null_resource" "ansible-provision" {
 
 # output the load balancer ip
 output "ip" {
-  value = "${digitalocean_loadbalancer.demo-lb.ip}"
+  value = digitalocean_loadbalancer.demo-lb.ip
 }
+
