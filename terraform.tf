@@ -10,18 +10,18 @@ provider "digitalocean" {
 
 # create two demo droplets
 resource "digitalocean_droplet" "demo-01" {
-  image    = "ubuntu-16-04-x64"
+  image    = "ubuntu-20-04-x64"
   name     = "demo-01"
   region   = "nyc3"
-  size     = "512mb"
+  size     = "s-1vcpu-1gb"
   ssh_keys = [var.ssh_fingerprint]
 }
 
 resource "digitalocean_droplet" "demo-02" {
-  image    = "ubuntu-16-04-x64"
+  image    = "ubuntu-20-04-x64"
   name     = "demo-02"
   region   = "nyc3"
-  size     = "512mb"
+  size     = "s-1vcpu-1gb"
   ssh_keys = [var.ssh_fingerprint]
 }
 

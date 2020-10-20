@@ -4,7 +4,7 @@ This repository contains [Terraform](https://www.terraform.io/) and [Ansible](ht
 
 This demo will create the following infrastructure using Terraform:
 
-- Two 512mb Droplets in the NYC3 datacenter running Ubuntu 16.04
+- Two 1 GB Droplets in the NYC3 datacenter running Ubuntu 20.04
 - One DigitalOcean Load Balancer to route HTTP traffic to the Droplets
 - One DigitalOcean Cloud Firewall to lock down communication between the Droplets and the outside world
 
